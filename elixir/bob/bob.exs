@@ -3,7 +3,7 @@ defmodule Bob do
     cond do
       silent?(input) ->
         "Fine. Be that way!"
-      yelling?(input) && questioning?(input) ->
+      yelling?(input) and questioning?(input) ->
         "Calm down, I know what I'm doing!"
       yelling?(input) ->
         "Whoa, chill out!"
@@ -15,22 +15,18 @@ defmodule Bob do
   end
 
   def yelling?(input) do
-    if letters?(input) do
+    if input != String.downcase(input) do
       input == String.upcase(input)
+    else
+      false
     end
   end
 
   def silent?(input) do
-    input
-    |> String.split
-    |> Enum.count == 0
+    String.trim(input) == ""
   end
 
   def questioning?(input) do
     String.ends_with?(input, "?")
-  end
-
-  def letters?(input) do
-    String.match?(input, ~r/\p{L}/)
   end
 end

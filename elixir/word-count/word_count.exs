@@ -10,18 +10,12 @@ defmodule Words do
     |> String.downcase
     |> String.splitter([" ", "_", ",", ":", "!", "&", "@", "$", "%", "^"], trim: true)
     |> Enum.to_list
-    |> on_map()
-  end
+    |> Enum.reduce(%{}, &add_to_hash/2)  end
 
-  def on_map(array), do: on_map(array, %{})
-  def on_map([head | tail], hash), do: add_to_hash(head, tail, hash)
-  def on_map([last], hash), do: add_to_hash(last, [], hash)
-  def on_map([], hash), do: hash
-
-  def add_to_hash(head, tail, hash) do
-    case Map.fetch(hash, head) do
-      {:ok, qty} -> on_map(tail, Map.put(hash, head, qty + 1))
-      _ -> on_map(tail, Map.put(hash, head, 1))
+  def add_to_hash(value, hash) do
+    case Map.fetch(hash, value) do
+      {:ok, qty} -> Map.put(hash, value, qty + 1)
+      _ -> Map.put(hash, value, 1)
     end
   end
 end

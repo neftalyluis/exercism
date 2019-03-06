@@ -9,13 +9,10 @@ defmodule Words do
     sentence
     |> String.downcase
     |> String.splitter([" ", "_", ",", ":", "!", "&", "@", "$", "%", "^"], trim: true)
-    |> Enum.to_list
-    |> Enum.reduce(%{}, &add_to_hash/2)  end
+    |> Enum.reduce(%{}, &add_to_map/2)
+  end
 
-  def add_to_hash(value, hash) do
-    case Map.fetch(hash, value) do
-      {:ok, qty} -> Map.put(hash, value, qty + 1)
-      _ -> Map.put(hash, value, 1)
-    end
+  defp add_to_map(value, hash) do
+    Map.update(hash, value, 1, &(&1 + 1))
   end
 end
